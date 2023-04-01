@@ -8,22 +8,23 @@ from rich import print
 
 openneuro_super_ds = Path("/home/remi/datalad/datasets.datalad.org/openneuro")
 
-def main():
 
+def main():
+    """Get demographic data from openneuro datasets."""
     datasets = [
-        d for d in openneuro_super_ds.iterdir() if (d.is_dir() and d.stem not in [".git"])
+        d
+        for d in openneuro_super_ds.iterdir()
+        if (d.is_dir() and d.stem not in [".git"])
     ]
 
     authors = []
 
     for ds in datasets:
-
         if not (ds / "dataset_description.json").exists():
             continue
 
         with open(ds / "dataset_description.json") as f:
             ds_desc = json.load(f)
-
 
         new_authors = ds_desc.get("Authors")
 
@@ -34,8 +35,8 @@ def main():
         if len(new_authors) == 1:
             new_authors = new_authors[0]
         if isinstance(new_authors, str):
-            new_authors = new_authors.split("., ")  
-        
+            new_authors = new_authors.split("., ")
+
         for author_ in new_authors:
             if author_ in ["TODO:"]:
                 continue
@@ -43,9 +44,6 @@ def main():
             author_ = author_.replace(",", "")
             author_ = author_.replace(".", "")
             authors.append(author_.lower())
-
-        
-
 
     authors = sorted(set(authors))
     print(authors)

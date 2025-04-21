@@ -42,7 +42,7 @@ repos:
       - id: codespell
 
   - repo: https://github.com/pyCQA/flake8
-    rev: 7.1.2
+    rev: 7.2.0
     hooks:
       - id: flake8
         args: [--verbose]
